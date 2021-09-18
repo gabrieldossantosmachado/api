@@ -20,13 +20,13 @@ server.use(restify.plugins.acceptParser(server.acceptable));
 server.use(restify.plugins.queryParser());
 server.use(restify.plugins.bodyParser());
 
-server.listen(8081, function () {
+server.listen(8082, function () {
   console.log('%s listening at %s', server.name, server.url);
 });
 
 
 //retorna todos os registros da  tabela 
-server.get('/manutencoes', (req, res, next) => {
+server.get('/api/manutencoes', (req, res, next) => {
     
     knex('manutencao').then((dados) => {
         res.send(dados);
@@ -35,7 +35,7 @@ server.get('/manutencoes', (req, res, next) => {
 });
 
 //insert
-server.post('/cadastro-de-manutencao', (req, res, next) => {
+server.post('/api/auth/cadastrarmanutencao', (req, res, next) => {
     
     knex('manutencao')
         .insert(req.body)
@@ -45,49 +45,20 @@ server.post('/cadastro-de-manutencao', (req, res, next) => {
     
 });
 
-
-//seleciona um registro por vez
-server.get('/manutencao/:id', (req, res, next) => {
+server.post('/api/auth/login/:email/:password', (req, res, next) => {
     
-    const { id } = req.params;
+    const { email } = req.params;
+    const { password } = req.params;
 
-    knex('manutencao')
-        .where('id', id)
+
+    knex('users')
+        .where('email', email)
+        .where('password', password)
+
+
         .first()
         .then((dados) => {
-            if(!dados) return res.send(new errs.BadRequestError('nada foi encontrado'))
+            if(!dados) return res.send(new errs.BadRequestError('0'))
             res.send(dados);
         }, next)
-        
-});
-
-
-//update em um único registor
-server.put('/update/:id', (req, res, next) => {
-    
-    const { id } = req.params;
-
-    knex('departamentos')
-        .where('id', id)
-        .update(req.body)
-        .then((dados) => {
-            if(!dados) return res.send(new errs.BadRequestError('nada foi encontrado'))
-            res.send('dados atualizados');
-        }, next)
-        
-});
-
-//delete em um úncio registro
-server.del('/delete/:id', (req, res, next) => {
-    
-    const { id } = req.params;
-
-    knex('departamentos')
-        .where('id', id)
-        .delete()
-        .then((dados) => {
-            if(!dados) return res.send(new errs.BadRequestError('nada foi encontrado'))
-            res.send('dados excluidos');
-        }, next)
-        
 });
