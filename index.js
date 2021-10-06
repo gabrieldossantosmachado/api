@@ -25,10 +25,19 @@ server.listen(8082, function () {
 });
 
 
-//retorna todos os registros da  tabela 
-server.get('/api/manutencoes', (req, res, next) => {
+//retorna todos os registros da  tabela  prioridades
+server.get('/api/auth/prioridades', (req, res, next) => {
     
-    knex('manutencao').then((dados) => {
+    knex('prioridade').then((dados) => {
+        res.send(dados);
+    }, next)
+    
+});
+
+//retorna todos os registros da  tabela departamentos
+server.get('/api/auth/departamentos', (req, res, next) => {
+    
+    knex('departamentos').then((dados) => {
         res.send(dados);
     }, next)
     
