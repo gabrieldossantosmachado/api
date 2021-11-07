@@ -24,11 +24,19 @@ server.listen(8082, function () {
   console.log('%s listening at %s', server.name, server.url);
 });
 
+//retorna todos os registros da  tabela  manutencoes
+server.get('/api/auth/manutencoes', (req, res, next) => {
+    
+    knex('manutencao' ).then((dados) => {
+        res.send(dados);
+    }, next)
+    
+});
 
 //retorna todos os registros da  tabela  prioridades
 server.get('/api/auth/prioridades', (req, res, next) => {
     
-    knex('prioridade').then((dados) => {
+    knex('prioridade' ).then((dados) => {
         res.send(dados);
     }, next)
     
@@ -45,7 +53,7 @@ server.get('/api/auth/departamentos', (req, res, next) => {
 
 //insert
 server.post('/api/auth/cadastrarmanutencao', (req, res, next) => {
-    
+    console.log(req.body);
     knex('manutencao')
         .insert(req.body)
         .then((dados) => {
