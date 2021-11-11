@@ -53,7 +53,6 @@ server.get('/api/auth/departamentos', (req, res, next) => {
 
 //insert
 server.post('/api/auth/cadastrarmanutencao', (req, res, next) => {
-    console.log(req.body);
     knex('manutencao')
         .insert(req.body)
         .then((dados) => {
@@ -66,7 +65,6 @@ server.post('/api/auth/login/:email/:password', (req, res, next) => {
     
     const { email } = req.params;
     const { password } = req.params;
-
 
     knex('users')
         .where('email', email)
